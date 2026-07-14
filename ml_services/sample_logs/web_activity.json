@@ -1,0 +1,78 @@
+[
+  {
+    "log_id": "web-001",
+    "timestamp": "2026-03-20T10:15:00.000Z",
+    "log_type": "activity_log",
+    "event": "page_visit",
+    "mitre_technique_id": "T1204",
+    "mitre_technique_name": "User Execution",
+    "severity": "INFO",
+    "source_ip": "192.168.1.20",
+    "user_id": "firebase-uid-abc123",
+    "details": {
+      "url": "https://corp.internal/dashboard",
+      "page_title": "Main Dashboard",
+      "referrer": "https://corp.internal/login",
+      "time_spent_seconds": 120,
+      "ml_anomaly_score": 0.05,
+      "ml_is_anomaly": false
+    }
+  },
+  {
+    "log_id": "web-002",
+    "timestamp": "2026-03-20T10:15:05.000Z",
+    "log_type": "activity_log",
+    "event": "click",
+    "mitre_technique_id": "T1204",
+    "mitre_technique_name": "User Execution",
+    "severity": "INFO",
+    "source_ip": "192.168.1.20",
+    "user_id": "firebase-uid-abc123",
+    "details": {
+      "element": "button#export-logs",
+      "url": "https://corp.internal/dashboard",
+      "coordinates": { "x": 542, "y": 308 },
+      "ml_anomaly_score": 0.03,
+      "ml_is_anomaly": false
+    }
+  },
+  {
+    "log_id": "web-003",
+    "timestamp": "2026-03-20T10:17:30.000Z",
+    "log_type": "network_log",
+    "event": "suspicious_request",
+    "mitre_technique_id": "T1190",
+    "mitre_technique_name": "Exploit Public-Facing Application",
+    "severity": "CRITICAL",
+    "source_ip": "192.168.1.99",
+    "details": {
+      "method": "GET",
+      "path": "/api/users?id=1 UNION SELECT username,password FROM users--",
+      "status_code": 400,
+      "response_time_ms": 12,
+      "payload_size_bytes": 0,
+      "user_agent": "sqlmap/1.6",
+      "ml_anomaly_score": 0.97,
+      "ml_is_anomaly": true,
+      "action_taken": "Request blocked and logged"
+    }
+  },
+  {
+    "log_id": "web-004",
+    "timestamp": "2026-03-20T10:18:00.000Z",
+    "log_type": "activity_log",
+    "event": "nav_away",
+    "mitre_technique_id": "T1204",
+    "mitre_technique_name": "User Execution",
+    "severity": "INFO",
+    "source_ip": "192.168.1.20",
+    "user_id": "firebase-uid-abc123",
+    "details": {
+      "from_url": "https://corp.internal/dashboard",
+      "to_url": "https://youtube.com",
+      "reason": "Tab switch / URL change",
+      "ml_anomaly_score": 0.12,
+      "ml_is_anomaly": false
+    }
+  }
+]

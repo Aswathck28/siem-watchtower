@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Target Corp - Login</title>
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: rgba(30, 41, 59, 0.5);
+            padding: 40px;
+            border-radius: 10px;
+            border: 1px solid #334155;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #38bdf8;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .btn-login {
+            background: #22c55e;
+            color: #fff;
+        }
+
+        .btn-login:hover {
+            background: #16a34a;
+        }
+
+        .btn-fail {
+            background: #f59e0b;
+            color: #000;
+        }
+
+        .btn-fail:hover {
+            background: #d97706;
+        }
+
+        .btn-attack {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        .btn-attack:hover {
+            background: #dc2626;
+        }
+
+        .status {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Target Corp Portal</h1>
+        <p>Simulation Interface for SIEM Testing</p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;">
+            <button class="btn btn-login" onclick="sendEvent('login_success', 'Authorized User Login')">✅ Normal
+                Login</button>
+            <button class="btn btn-fail" onclick="sendEvent('login_fail', 'Invalid Password Attempt')">⚠️ Brute Force
+                (T1110)</button>
+
+            <button class="btn btn-attack" onclick="sendEvent('sql_injection', 'payload: \' OR 1=1 --')">💉 SQL
+                Injection (T1190)</button>
+            <button class="btn btn-attack" onclick="sendEvent('xss_attack', 'payload: <script>alert(1)</script>')">🦠
+                XSS Attack (T1059.007)</button>
+
+            <button class="btn btn-attack" style="background: #a855f7"
+                onclick="sendEvent('promote_admin', 'target: user_123')">🔑 Priv Escalation (T1098)</button>
+            <button class="btn btn-attack" style="background: #ec4899"
+                onclick="sendEvent('js_error', 'Reconnaissance Probe')">🕵️ Host Discovery (T1592)</button>
+
+            <button class="btn btn-fail" style="background: #64748b; color: #fff"
+                onclick="sendEvent('network_error', 'Port Scan / Protocol Mismatch')">📡 App Layer Protocol
+                (T1071)</button>
+            <button class="btn btn-attack" style="background: #000; border: 1px solid #ef4444"
+                onclick="sendEvent('clipboard_copy', 'Sensitive Data Exfiltration')">📋 Data Theft (T1115)</button>
+        </div>
+
+        <div class="status" id="status">System Ready...</div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api/log';
+        // Generate a random Visitor ID
+        const VISITOR_ID = 'visitor-' + Math.floor(Math.random() * 10000);
+
+        async function sendEvent(action, detailsMsg) {
+            const statusEl = document.getElementById('status');
+            statusEl.innerText = 'Sending event...';
+            statusEl.style.color = '#fff';
+
+            const payload = {
+                uid: VISITOR_ID,
+                action: action,
+                details: {
+                    message: detailsMsg,
+                    url: window.location.href,
+                    userAgent: navigator.userAgent
+                },
+                sessionId: 'session-demo'
+            };
+
+            try {
+                // Determine if we need to trick the backend logic mapping
+                // server/index.js maps 'login_fail' -> T1110, 'error' -> T1499
+                // For SQLi/XSS, we might want to send specific action names if the backend logic analyzes them.
+                // Currently backend analyzes: login_success, login_fail, promote_admin, delete_user, js_error, network_error
+                // It also checks details.path for 'admin'.
+
+                // Let's refine the action for the attacks to match T-codes if possible, 
+                // but the current server logic is simple.
+                // We'll send them as is, and they will show up in the logs.
+
+                await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                statusEl.innerText = `Sent: ${action}`;
+                statusEl.style.color = '#22c55e';
+            } catch (err) {
+                console.error(err);
+                statusEl.innerText = 'Error connecting to SIEM Server';
+                statusEl.style.color = '#ef4444';
+            }
+        }
+    </script>
+</body>
+
+</html>

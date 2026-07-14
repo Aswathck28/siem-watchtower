@@ -1,0 +1,11 @@
+{
+  "name": "siem-watchtower-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node start-all.js"
+  },
+  "dependencies": {
+    "playwright": "^1.59.1"
+  }
+}

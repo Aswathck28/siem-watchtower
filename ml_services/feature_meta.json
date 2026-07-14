@@ -1,0 +1,40 @@
+{
+  "method_map": {
+    "GET": 0,
+    "POST": 1,
+    "PUT": 2,
+    "DELETE": 3,
+    "PATCH": 4,
+    "OPTIONS": 5,
+    "HEAD": 6
+  },
+  "action_types": {
+    "login_success": 0,
+    "login_fail": 1,
+    "logout": 2,
+    "session_start": 3,
+    "promote_admin": 4,
+    "delete_user": 5,
+    "change_password": 6,
+    "create_user": 7,
+    "sql_injection": 8,
+    "xss_attack": 9,
+    "path_traversal": 10,
+    "js_error": 11,
+    "console_open": 12,
+    "source_view": 13,
+    "network_error": 14,
+    "clipboard": 15,
+    "download": 16,
+    "upload": 17,
+    "delete_log": 18,
+    "nav_rapid": 19,
+    "device_fingerprint": 20,
+    "battery_drain": 21,
+    "brute_force_simulation": 22,
+    "rage_click": 23,
+    "network_request": 24,
+    "performance_metric": 25,
+    "route_change": 26
+  }
+}

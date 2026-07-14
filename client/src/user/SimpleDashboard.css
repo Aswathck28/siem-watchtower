@@ -1,0 +1,93 @@
+.simple-soc-container {
+  max-width: 1000px;
+  margin: auto;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  color: #111827;
+}
+
+.simple-soc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #1f2937;
+  color: white;
+}
+
+.simple-filter-group button {
+  background: transparent;
+  color: white;
+  border: 1px solid #4b5563;
+  padding: 6px 12px;
+  margin-left: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.simple-filter-group button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.simple-filter-group button.active {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+.simple-filter-group button.active-high { background-color: rgba(239, 68, 68, 0.2); }
+.simple-filter-group button.active-medium { background-color: rgba(245, 158, 11, 0.2); }
+.simple-filter-group button.active-low { background-color: rgba(16, 185, 129, 0.2); }
+
+/* Table Styling */
+.simple-logs-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.simple-logs-table th, .simple-logs-table td {
+  padding: 12px 20px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.simple-logs-table th {
+  background-color: #f9fafb;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.simple-log-row:hover {
+  background-color: #f9fafb !important;
+}
+
+.simple-time-cell { color: #6b7280; font-size: 0.9rem; }
+.simple-host-cell { font-weight: 600; }
+.simple-type-cell { font-family: monospace; font-size: 0.9rem; }
+
+/* Badges */
+.simple-count-badge {
+  background-color: #e5e7eb;
+  color: #374151;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.simple-severity-badge {
+  color: white;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.simple-empty-state {
+  text-align: center;
+  padding: 40px !important;
+  color: #9ca3af;
+}

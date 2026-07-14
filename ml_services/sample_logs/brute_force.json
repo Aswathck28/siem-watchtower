@@ -1,0 +1,56 @@
+[
+  {
+    "log_id": "log-001",
+    "timestamp": "2026-03-20T10:05:01.000Z",
+    "log_type": "activity_log",
+    "event": "login_fail",
+    "mitre_technique_id": "T1110",
+    "mitre_technique_name": "Brute Force",
+    "severity": "MEDIUM",
+    "source_ip": "192.168.1.45",
+    "destination_ip": "10.0.0.1",
+    "user_id": "unknown",
+    "details": {
+      "email": "admin@corp.local",
+      "reason": "Invalid Credentials",
+      "attempt_number": 1
+    }
+  },
+  {
+    "log_id": "log-002",
+    "timestamp": "2026-03-20T10:05:04.000Z",
+    "log_type": "activity_log",
+    "event": "login_fail",
+    "mitre_technique_id": "T1110",
+    "mitre_technique_name": "Brute Force",
+    "severity": "MEDIUM",
+    "source_ip": "192.168.1.45",
+    "destination_ip": "10.0.0.1",
+    "user_id": "unknown",
+    "details": {
+      "email": "admin@corp.local",
+      "reason": "Invalid Credentials",
+      "attempt_number": 2
+    }
+  },
+  {
+    "log_id": "log-005",
+    "timestamp": "2026-03-20T10:05:18.000Z",
+    "log_type": "activity_log",
+    "event": "BRUTE_FORCE_ALERT",
+    "mitre_technique_id": "T1110",
+    "mitre_technique_name": "Brute Force",
+    "severity": "CRITICAL",
+    "source_ip": "192.168.1.45",
+    "destination_ip": "10.0.0.1",
+    "user_id": "unknown",
+    "details": {
+      "email": "admin@corp.local",
+      "total_attempts": 5,
+      "window_seconds": 17,
+      "action_taken": "Alert sent to admin, IP flagged",
+      "ml_anomaly_score": 0.87,
+      "ml_is_anomaly": true
+    }
+  }
+]

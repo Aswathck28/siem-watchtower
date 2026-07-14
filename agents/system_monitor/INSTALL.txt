@@ -1,0 +1,96 @@
+SIEM-Watchtower System Monitor — Permanent background installation
+================================================================
+
+Goal: After one-time setup, the agent runs silently (no console window), starts
+automatically when you log on to Windows, survives sleep/resume, restarts
+after crashes, and never runs two copies at once.
+
+Collecting logs in the SIEM database (PostgreSQL)
+-------------------------------------------------
+The agent always writes to agent_debug.log and offline_logs.sqlite. For events to
+appear in the web dashboard, the Node.js backend must be running on the URL in
+config.py (default http://localhost:5000).
+
+Start the server from the project (example):
+  cd <repo>\server
+  npm start
+
+If the backend is stopped, the agent still queues logs locally; they are sent
+when the server is reachable again. At startup the agent logs [BACKEND] probe
+lines to agent_debug.log showing whether the API is reachable.
+
+Optional: set environment variable SIEM_BACKEND_URL if the API is not on localhost:5000.
+
+ONE-TIME INSTALL (recommended)
+------------------------------
+1. Install Python 3.x for Windows from python.org and enable "Add Python to PATH".
+
+2. Right-click "install_service.bat" in this folder and choose "Run as administrator".
+   (Administrator is required to create the Scheduled Task.)
+
+3. Wait for "INSTALL COMPLETE". You do not need to run "python main.py" again.
+
+What gets installed
+-------------------
+- A Windows Scheduled Task named: SIEMWatchtowerAgent
+- It runs: pythonw.exe main.py
+  (pythonw = no visible terminal window)
+- Working directory: this folder (agents\system_monitor)
+
+When the agent starts
+-----------------------
+- Automatically at every user logon (including after reboot, once you sign in).
+- The installer also runs the task once so it starts immediately after install.
+
+Sleep / hibernate / resume
+----------------------------
+- The same process keeps running across sleep/wake when the session resumes.
+- After a full reboot, the task starts the agent again at logon.
+
+Crash recovery
+--------------
+- main.py has an outer loop that restarts the agent logic after unexpected errors.
+- The scheduled task is configured with restart-on-failure settings as a backup
+  if the whole process exits.
+
+Single instance (no duplicates)
+-------------------------------
+- main.py uses a global mutex: Global\SIEM_Watchtower_Agent_Mutex
+- A second start exits immediately so you cannot stack background copies.
+
+Verify the task
+---------------
+  schtasks /query /tn "SIEMWatchtowerAgent" /v /fo LIST
+
+Manual start (optional)
+-----------------------
+  schtasks /run /tn "SIEMWatchtowerAgent"
+
+Remove the task (uninstall agent autostart)
+-------------------------------------------
+  schtasks /delete /tn "SIEMWatchtowerAgent" /f
+
+Configuration
+-------------
+- Backend URL and intervals: config.py
+- Debug log: agent_debug.log (rotating)
+- Optional env SIEM_REPORTING_HOSTNAME: Windows PC name sent to the API (defaults to socket.gethostname()).
+  If the dashboard stays empty, set it to the same value as users.hostname in PostgreSQL, or rely on
+  single-PC auto-binding (server matches one reporting host to your user).
+
+If application OPEN/CLOSE events never appear (e.g. Notepad++)
+----------------------------------------------------------------
+1. Open agent_debug.log and find the line starting with [APP_ENV]. It must show
+   arch=64bit. If you see arch=32bit, install 64-bit Python from python.org,
+   run install_service.bat again, then end the old agent:
+     taskkill /F /IM pythonw.exe
+   (only if no other pythonw apps need to stay open), then:
+     schtasks /run /tn "SIEMWatchtowerAgent"
+
+2. After updating code, the scheduled task may still be running an OLD pythonw
+   process. The new instance exits and writes:
+     "Exiting: another instance already holds ... Mutex"
+   to agent_debug.log. Stop the old agent (step 1) or reboot, then run the task again.
+
+3. Confirm Notepad++ process names in Task Manager (Details): often
+   notepad++.exe, notepad++.64.exe, or notepad++.32.exe — all are matched.

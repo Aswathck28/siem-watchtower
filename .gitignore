@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+client/node_modules/
+
+# Build output
+client/build/
+
+# Environment variables (NEVER commit these)
+.env
+server/.env
+*.env.local
+
+# Python virtual environment & compiled files
+ml_service/venv/
+ml_service/__pycache__/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+
+# Database files
+*.db
+*.sqlite
+
+# Log files (runtime data)
+server/logs/*.log
+server/logs/*.json
+server/data/
+
+# IDE & OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+
+# ML model binaries (optional — uncomment to exclude large pkl files from git)
+# ml_service/*.pkl
+
+# Certificate & key files
+*.pem
+*.key
+*.cert
+ml_services/random_forest.pkl
